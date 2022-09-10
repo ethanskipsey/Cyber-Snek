@@ -11,6 +11,14 @@ fi
 
 # Firewall
 sudo ufw enable
+echo -n "UFW allow SSH [Y/n] "
+read option
+if [[ $option =~ ^[Yy]$ ]]
+then
+  sudo ufw allow ssh
+else
+  sudo ufw deny ssh
+fi
 
 # Updates
 sudo apt-get -y upgrade
@@ -76,6 +84,18 @@ else
   sudo apt-get -y purge vsftpd*
 fi
 
+ # rkhunter
+
+echo -n "rkhunter [Y/n] "
+read option
+if [[ $option =~ ^[Yy]$ ]]
+then
+  sudo apt-get install rkhunter
+  sudo rkhunter --update
+  sudo rkhunter --check
+  sudo rkhunter --check --enable apps
+fi
+
 # Malware
 sudo apt-get -y purge hydra*
 sudo apt-get -y purge john*
@@ -87,3 +107,4 @@ for suffix in mp3 txt wav wma aac mp4 mov avi gif jpg png bmp img exe msi bat sh
 do
   sudo find /home -name *.$suffix
 done
+
