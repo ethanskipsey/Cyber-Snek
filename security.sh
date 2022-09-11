@@ -20,6 +20,13 @@ else
   sudo ufw deny ssh
 fi
 
+# Secure Shadow File
+chmod 640 /etc/shadow
+
+# Configure sysctl config file
+sudo sysctl -p
+sudo echo -e "net.ipv4.conf.all.accept_redirects = 0\nnet.ipv4.ip_forward = 0\nPermitRootLogin no\nProtocol 2\nPermitEmptyPasswords no\nUsePAM yes\nUsePrivilege yes"
+
 # Updates
 sudo apt-get -y upgrade
 sudo apt-get -y update
@@ -84,8 +91,7 @@ else
   sudo apt-get -y purge vsftpd*
 fi
 
- # rkhunter
-
+# rkhunter
 echo -n "rkhunter [Y/n] "
 read option
 if [[ $option =~ ^[Yy]$ ]]
@@ -94,6 +100,15 @@ then
   sudo rkhunter --update
   sudo rkhunter --check
   sudo rkhunter --check --enable apps
+fi
+
+# Bastille
+echo -n "Bastille [Y/n] "
+read option
+if [[ $option =~ ^[Yy]$ ]]
+then
+  sudo apt-get install bastille
+  sudo bastille -x
 fi
 
 # Malware
