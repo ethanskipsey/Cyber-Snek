@@ -9,7 +9,8 @@ then
   exit 1
 fi
 
-# Firewall
+# Firewall 
+sudo apt-get -y install ufw
 sudo ufw enable
 echo -n "UFW allow SSH [Y/n] "
 read option
@@ -26,6 +27,9 @@ sudo apt-get -y update
 
 # Lock Out Root User
 sudo passwd -l root
+
+# Secure Shadow File
+chmod 640 /etc/shadow
 
 # Disable Guest Account
 echo "allow-guest=false" >> /etc/lightdm/lightdm.conf
