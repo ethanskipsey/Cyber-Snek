@@ -2,6 +2,7 @@
 
 # Debian Security Script
 # Ethan Skipsey
+# Sam T
 
 if [[ $EUID -ne 0 ]]
 then
@@ -16,7 +17,7 @@ do
 done
 
 # Write Users and Groups to a File on the Desktop
-cat /etc/passwd | grep home | cut -d ';' -f 1 > users.txt
+cat /etc/passwd | grep home | cut -d ':' -f 1 > users.txt
 cat /etc/group | grep 'adm\su' >> users.txt
 
 # Update Repositories List
@@ -33,7 +34,7 @@ apt -y upgrade
 apt -y dist-upgrade
 
 # Firewall
-apt install ufw
+apt -y install ufw
 ufw enable 
 
 # Configure Password Aging Control
