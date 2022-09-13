@@ -1,16 +1,18 @@
 #!/bin/bash
 
 # Debian Security Script
-# Ethan Skipsey
-# Sam T
+# Ethan Skipsey, Samuel Thompson
 
 if [[ $EUID -ne 0 ]]
 then
-	echo "You must be root to run this script."
+	echo 'You must be root to run this script.'
 	exit 1
 fi
 
-# Delete Unauthorised Files
+# Lock Out Root User
+passwd root
+
+# Delete Unauthorised File
 for suffix in mp3 txt wav wma aac mp4 mov avi gif jpg png bmp img exe msi bat sh
 do
   find /home -name *.$suffix -delete
@@ -52,13 +54,19 @@ sed -i '/password   requisite   pam_pwquality.so retry=3/ c\password   requisite
 # Configure Permissions for /etc/shadow
 chmod 640 /etc/shadow
 
+# Secure Network Configuration
+sed -i '/rp_filter/ c\net/ipv4/conf/all/rp_filter = 1' /etc/sysctl.conf
+sed -i '/accept_redirects/ c\net/ipv4/conf/all/accept_redirects = 0' /etc/sysctl.conf
+sed -i '/send_redirects/ c\net/ipv4/conf/all/send_redirects = 0' /etc/sysctl.conf
+
+
 # RKHunter
 apt -y install rkhunter 
 rkhunter --update
 rkhunter --check
 
 # MySQL
-echo -n "MySQL [Y/n] "
+echo -n 'MySQL [Y/n]'
 read option
 if [[ $option =~ ^[Yy]$ ]]
 then
@@ -80,7 +88,10 @@ then
   sed -i '/^PermitRootLogin/ c\PermitRootLogin no' /etc/ssh/sshd_config
   # Disable X11 Forwarding
   sed -i '/X11Forwarding/ c\X11Fowarding no' /etc/ssh/sshd_config
+  # Allow SSH Through Firewall
+  ufw allow ssh
   systemctl restart ssh
+  systemctl restart sshd
 else
   apt -y purge openssh-server*
 fi
@@ -101,8 +112,8 @@ else
   apt -y purge vsftpd*
 fi
 
-# PureFTP
-echo -n 'PureFTP [Y/n] '
+# Pure-FTPd
+echo -n 'Pure-FTPd [Y/n] '
 read option
 if [[ $option =~ ^[Yy]$ ]]
 then
@@ -114,7 +125,7 @@ fi
 # Apache
 
 # Malware/Hacking Tools
-for program in netcat nmap zenmap ptunnel wireshark john burpsuite metasploit aircrack-ng sqlmap autopsy setoolkit lynis wpscan hydra skipfish maltego nessus beef apktool snort nikto yersinia 
+for program in netcat nmap zenmap ptunnel wireshark john burpsuite metasploit aircrack-ng sqlmap autopsy setoolkit lynis wpscan hydra skipfish maltego nessus beef apktool snort nikto yersinia stmpd rsync
 do 
   apt -y purge $program*
 done
