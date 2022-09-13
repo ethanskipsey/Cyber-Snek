@@ -18,7 +18,7 @@ done
 
 # Write Users and Groups to a File on the Desktop
 cat /etc/passwd | grep home | cut -d ':' -f 1 > users.txt
-cat /etc/group | grep 'adm\su' >> users.txt
+cat /etc/group | grep 'adm\|su' >> users.txt
 
 # Update Repositories List
 echo -e 'deb http://deb.debian.org/debian/ buster main' > /etc/apt/sources.list
