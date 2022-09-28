@@ -18,6 +18,9 @@ do
   find /home -name *.$suffix -delete
 done
 
+# Write running processes to a File on the Desktop
+ps -ef | cut -c 50- > processes.txt
+
 # Write Users and Groups to a File on the Desktop
 cat /etc/passwd | grep home | cut -d ':' -f 1 > users.txt
 cat /etc/group | grep 'adm\|su' >> users.txt
@@ -64,6 +67,10 @@ sed -i '/send_redirects/ c\net/ipv4/conf/all/send_redirects = 0' /etc/sysctl.con
 apt -y install rkhunter 
 rkhunter --update
 rkhunter --check
+
+# Auditd
+# apt -y install auditd
+# auditctl -e 1
 
 # MySQL
 echo -n 'MySQL [Y/n]'
@@ -129,4 +136,3 @@ for program in netcat nmap zenmap ptunnel wireshark john burpsuite metasploit ai
 do 
   apt -y purge $program*
 done
-
