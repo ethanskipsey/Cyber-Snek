@@ -9,16 +9,16 @@ then
 	exit 1
 fi
 
-# Lock Out Root User
+# Create A Root Password
 passwd root
 
-# Delete Unauthorised File
+# Delete Unauthorised Files
 for suffix in mp3 txt wav wma aac mp4 mov avi gif jpg png bmp img exe msi bat sh
 do
   find /home -name *.$suffix -delete
 done
 
-# Write running processes to a File on the Desktop
+# Write Running Processes to a File on the Desktop
 ps -ef | cut -c 50- > processes.txt
 
 # Write Users and Groups to a File on the Desktop
@@ -26,12 +26,13 @@ cat /etc/passwd | grep home | cut -d ':' -f 1 > users.txt
 cat /etc/group | grep 'adm\|su' >> users.txt
 
 # Update Repositories List
-echo -e 'deb http://deb.debian.org/debian/ buster main' > /etc/apt/sources.list
-echo -e 'deb-src http://deb.debian.org/debian/ buster main' >> /etc/apt/sources.list
-echo -e 'deb http://deb.debian.org/debian/ buster-updates main' >> /etc/apt/sources.list
-echo -e 'deb-src http://deb.debian.org/debian/ buster-updates main' >> /etc/apt/sources.list
-echo -e 'deb http://security.debian.org/debian-security buster/updates main' >> /etc/apt/sources.list
-echo -e 'deb-src http://security.debian.org/debian-security buster/updates main' >> /etc/apt/sources.list
+version=$(lsb_release -a | grep Codename: | cut -d ':' -f 2 | awk '{$1=$1};1')
+echo 'deb http://deb.debian.org/debian '$version' main' > /etc/apt/sources.list
+echo 'deb http://deb.debian.org/debian '$version'-updates main' >> /etc/apt/sources.list
+echo 'deb http://deb.debian.org/debian-security/ '$version'-security main' >> /etc/apt/sources.list
+echo 'deb-src http://deb.debian.org/debian '$version' main' >> /etc/apt/sources.list
+echo 'deb-src http://deb.debian.org/debian '$version'-updates main' >> /etc/apt/sources.list
+echo 'deb-src http://deb.debian.org/debian-security/ '$version'-security main' >> /etc/apt/sources.list
 
 # Update And Upgrade Packages
 apt -y update
@@ -61,7 +62,6 @@ chmod 640 /etc/shadow
 sed -i '/rp_filter/ c\net/ipv4/conf/all/rp_filter = 1' /etc/sysctl.conf
 sed -i '/accept_redirects/ c\net/ipv4/conf/all/accept_redirects = 0' /etc/sysctl.conf
 sed -i '/send_redirects/ c\net/ipv4/conf/all/send_redirects = 0' /etc/sysctl.conf
-
 
 # RKHunter
 apt -y install rkhunter 
