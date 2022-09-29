@@ -24,6 +24,7 @@ ps -ef | cut -c 50- > processes.txt
 # Write Users and Groups to a File on the Desktop
 cat /etc/passwd | grep home | cut -d ':' -f 1 > users.txt
 cat /etc/group | grep 'adm\|su' >> users.txt
+cat /etc/shadow | awk -F: '($2==""){print $1}' >> users.txt
 
 # Update Repositories List
 version=$(lsb_release -a | grep Codename: | cut -d ':' -f 2 | awk '{$1=$1};1')
