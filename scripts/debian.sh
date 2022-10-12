@@ -131,6 +131,14 @@ else
 fi
 
 # Apache
+echo -n 'Apache [Y/n]'
+read option
+if [[ $option =~ ^[Yy]$ ]]
+then
+  apt -y install apache2
+else
+  apt -y purge apache*
+fi
 
 # Malware/Hacking Tools
 for program in netcat nmap zenmap ptunnel wireshark john burpsuite metasploit aircrack-ng sqlmap autopsy setoolkit lynis wpscan hydra skipfish maltego nessus beef apktool snort nikto yersinia stmpd rsync
