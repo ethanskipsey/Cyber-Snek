@@ -69,9 +69,15 @@ apt -y install rkhunter
 rkhunter --update
 rkhunter --check
 
+
+# !!! EXPERIMENTAL SECTION !!!
+
+
 # Auditd
 # apt -y install auditd
 # auditctl -e 1
+
+
 
 # MySQL
 echo -n 'MySQL [Y/n]'
