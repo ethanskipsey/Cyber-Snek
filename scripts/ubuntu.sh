@@ -15,11 +15,11 @@ passwd -l root
 # Remove Guest Account
 echo 'allow-guest=false' >> /etc/lightdm/lightdm.conf
 
-# Delete Unauthorised Files
-for suffix in mp3 txt wav wma aac mp4 mov avi gif jpg png bmp img exe msi bat
-do
-  find /home -name *.$suffix -delete
-done
+#  Delete Unauthorised Files
+# for suffix in mp3 txt wav wma aac mp4 mov avi gif jpg png bmp img exe msi bat
+# do
+#  find /home -name *.$suffix -delete
+# done
 
 # Write Running Processes to a File on the Desktop
 ps -ef | cut -c 50- > processes.txt

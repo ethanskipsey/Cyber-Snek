@@ -77,8 +77,6 @@ rkhunter --check
 # apt -y install auditd
 # auditctl -e 1
 
-
-
 # MySQL
 echo -n 'MySQL [Y/n]'
 read option
