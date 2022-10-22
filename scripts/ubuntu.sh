@@ -16,7 +16,7 @@ passwd -l root
 echo 'allow-guest=false' >> /etc/lightdm/lightdm.conf
 
 # Delete Unauthorised Files
-for suffix in mp3 wav wma aac mp4 mov avi gif jpg png bmp img exe msi bat
+for suffix in mp3 wav wma aac mp4 mov avi gif bmp img exe msi bat
 do
   find /home -name *.$suffix -delete
 done

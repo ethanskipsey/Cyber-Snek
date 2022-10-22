@@ -13,7 +13,7 @@ fi
 passwd root
 
 # Delete Unauthorised Files
-for suffix in mp3 wav wma aac mp4 mov avi gif jpg png bmp img exe msi bat sh
+for suffix in mp3 wav wma aac mp4 mov avi gif bmp img exe msi bat sh
 do
   find /home -name *.$suffix -delete
 done
